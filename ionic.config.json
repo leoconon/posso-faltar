@@ -1,0 +1,7 @@
+{
+  "name": "posso-faltar",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
