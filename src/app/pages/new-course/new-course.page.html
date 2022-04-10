@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Novo curso</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formGroup">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Nome</ion-label>
+        <ion-input formControlName="name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Período</ion-label>
+        <ion-select placeholder="Selecione" formControlName="period">
+          <ion-select-option [value]="1">Matutino</ion-select-option>
+          <ion-select-option [value]="2">Vespertino</ion-select-option>
+          <ion-select-option [value]="3">Noturno</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Data de início</ion-label>
+        <ion-input type="date" formControlName="startDate"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Data de fim</ion-label>
+        <ion-input type="date" formControlName="endDate"></ion-input>
+      </ion-item>
+      <ion-list-header>
+        <ion-label>Disciplinas</ion-label>
+      </ion-list-header>
+      <div *ngFor="let weekDay of weekDays">
+        <ion-item-divider>
+          <ion-label>
+            {{weekDay.description}}
+          </ion-label>
+        </ion-item-divider>
+
+        <ion-item *ngFor="let subject of weekDay.subjects" button (click)="editSubject(subject)">
+          {{subject.description}}
+          <ion-icon name="close-circle-outline" slot="start" (click)="removeSubject(weekDay, subject)"></ion-icon>
+        </ion-item>
+
+        <ion-item button (click)="addSubject(weekDay)">
+          <ion-label><p>Adicionar</p></ion-label>
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+        </ion-item>
+
+      </div>
+    </ion-list>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" (click)="save()" [disabled]="!formGroup.valid">
+    Salvar
+  </ion-button>
+</ion-footer>
+
+<ion-modal
+  #modal
+  [breakpoints]="[0.7]"
+  [initialBreakpoint]="0.7">
+  <ng-template>
+    <ion-content>
+      <ion-item>
+        <ion-label>Nome:</ion-label>
+        <ion-input #inputSubjectName [(ngModel)]="subjectInEdition.description"></ion-input>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>

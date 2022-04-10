@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="getToday()">
+        <ion-icon slot="icon-only" name="calendar-number"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Resumo da semana</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-text-center ion-align-items-center ion-margin-top">
+      <ion-col>
+        <ion-button shape="round" (click)="backWeek()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        {{firstDayWeek | date: 'dd/MM'}} - {{lastDayWeek | date: 'dd/MM'}}
+      </ion-col>
+      <ion-col>
+        <ion-button shape="round" (click)="nextkWeek()">
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div *ngFor="let day of weekDays" [hidden]="!day.cards.length">
+    <ion-list-header>
+      <ion-label>
+        {{day.name}} {{day.isToday ? '(Hoje)' : ''}}
+      </ion-label>
+    </ion-list-header>
+    <ion-card *ngFor="let card of day.cards">
+      <ion-item [color]="card.statusColor">
+        <ion-label>
+          <strong>{{card.subject.description}}</strong>
+        </ion-label>
+        <ion-toggle
+          color="danger"
+          [checked]="card.absentId"
+          (ionChange)="markAbsent($event, card)">
+        </ion-toggle>
+      </ion-item>
+      <ion-item [color]="card.statusColor">
+        <ion-icon name="school-outline" slot="start"></ion-icon>
+        <ion-label>{{card.course}}</ion-label>
+      </ion-item>
+      <ion-item [color]="card.statusColor" lines="none" button detail>
+        <ion-icon name="pulse-outline" slot="start"></ion-icon>
+        <ion-label>{{card.subject.absentCount}} faltas registradas</ion-label>
+      </ion-item>
+    </ion-card>
+  </div>
+
+</ion-content>
